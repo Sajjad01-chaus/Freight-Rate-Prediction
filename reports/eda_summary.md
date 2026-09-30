@@ -2,7 +2,7 @@
 
 - **Corrupted labels**: 677 of 48,000 (1.41%): 337 deflated (0.16-0.45x), 340 inflated (2.1-5.2x); clean loads sit within 0.8-1.2x of expected
 - **Equipment**: Dry Van $2.05/mi, Flatbed $2.22/mi, Reefer $2.31/mi (median)
-- **Market index**: daily mean correlates 0.71 with daily rate level; train mean 1.083 vs validation 0.927; within-day sd only 0.025; strong weekly cycle (Thu peak 1.16 vs Sun trough 0.96); same-day value beats rolling/lagged versions
+- **Market index**: daily mean correlates 0.71 with daily rate level; train mean 1.083 vs validation 0.927; within-day sd only 0.025; strong weekly cycle (Thu peak 1.16 vs Sun trough 0.96); same-day value beats short rolling windows and lags; long smoothed averages correlate slightly higher only because they track the slow trend, and did not generalise in model tests
 - **Time drift**: residual goes from -3.2% (Jan) to +2.4% (Oct) after controlling for market index: a trend the model must extrapolate into Nov-Dec
 - **Weight**: train: 292 negative, 300 missing, 1,191 capped at 47,500; validation: 145 negative, 165 missing. Negative-weight loads price like |weight| (median rpm 2.16 vs 2.15)
 - **Cities & lanes**: 72 cities total; 8 validation-only (Allentown, Charlotte, Chicago, Jackson, Knoxville, Laredo, Norfolk, San Diego) touching 12.1% of validation loads; 87.8% of validation loads are on a lane seen in training. Coordinates are synthetic (e.g. Los Angeles lat 28.6, Boston lon clipped at -69.5) but one fixed pair per city; distance is ~1.18x the great-circle distance

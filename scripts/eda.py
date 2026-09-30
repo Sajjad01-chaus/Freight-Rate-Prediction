@@ -128,7 +128,7 @@ def main() -> None:
         f"daily mean correlates {daily[['mi', 'rel']].corr().iloc[0, 1]:.2f} with daily rate level; "
         f"train mean {train.market_index.mean():.3f} vs validation {val.market_index.mean():.3f}; "
         f"within-day sd only {train.groupby('date').market_index.std().mean():.3f}; strong weekly cycle "
-        f"(Thu peak {weekday.max():.2f} vs Sun trough {weekday.min():.2f}); same-day value beats rolling/lagged versions"
+        f"(Thu peak {weekday.max():.2f} vs Sun trough {weekday.min():.2f}); same-day value beats short rolling windows and lags; long smoothed averages correlate slightly higher only because they track the slow trend, and did not generalise in model tests"
     )
 
     # 4. Unexplained upward drift over time

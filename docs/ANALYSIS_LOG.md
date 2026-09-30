@@ -86,7 +86,7 @@ The extreme rate-per-mile values (0.33 and 14.1) were the first sign of bad labe
 - Same value (plus small noise) for every load on a given day -> a daily market signal.
 - Daily mean correlates **0.71** with the daily rate level.
 - Strong **weekly cycle**: Thursday peak ~1.16, Sunday trough ~0.96.
-- Tested same-day vs 3/7/14/28/56-day rolling means, 7/14-day lags, exponential smoothing and weekday-adjusted versions: **same-day value is best**.
+- Tested same-day vs 3/7/14/28/56-day rolling means, 7/14-day lags, exponential smoothing and weekday-adjusted versions. Same-day beats short windows and lags (corr 0.69). A 30-day exponential average correlates slightly higher (0.74), but only because it tracks the slow time trend; smoothed market features were later tested inside the model and did not generalise (section 6.5, lever B). **Same-day value kept.**
 - Validation period sits much lower: mean 0.927 vs 1.083 in training (spring peak ~1.30).
 - Elasticity: ~0.12-0.14 (a 10% higher index -> ~1.3% higher rate). Measured from within-week variation so it isn't confused with the slow trend.
 
