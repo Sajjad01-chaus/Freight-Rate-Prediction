@@ -1,0 +1,37 @@
+{
+  "model": "FINAL: hybrid linear-tree x5 seeds + lane premium",
+  "training_rows": 47323,
+  "label_outliers_removed": 677,
+  "boosting_rounds": 1358,
+  "seeds": 5,
+  "tree_features": [
+    "distance",
+    "log_distance",
+    "pickup_lat",
+    "pickup_lon",
+    "delivery_lat",
+    "delivery_lon",
+    "circuity",
+    "delta_lat",
+    "delta_lon",
+    "equipment",
+    "weight",
+    "weight_was_missing",
+    "weight_was_negative",
+    "weight_at_cap"
+  ],
+  "market_component_coefficients": {
+    "log_market_index": 0.12989,
+    "log_market_index_day": 0.02288,
+    "qe_ramp": 0.02333,
+    "qe_ramp_flatbed": 0.05275,
+    "qe_ramp_reefer": 0.02529,
+    "trend_months": 0.00591
+  },
+  "lanes_with_premium": 4013,
+  "lane_premium_range": [
+    -0.0144,
+    0.0151
+  ],
+  "in_sample_MAPE": 0.01058
+}
