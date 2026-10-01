@@ -340,7 +340,21 @@ Combined with the earlier gains:
 
 **Quarter-end tail.** The last 1-3 days of a quarter are under-predicted by 0.5-1.1% (the ramp steepens at the very end). Adding a 4-day tail term: mean 1.531% -> 1.525%, tail bias +0.83% -> +0.58%, but mixed by fold (Q2, X2 slightly worse) and based on ~12 days from three quarters. Not adopted; noted as a known limitation (Dec 28-31 may be ~0.5% low).
 
-### 6.8 Ramp shape check
+### 6.8 Lane premium: random vs time-respecting out-of-fold residuals
+Question a reviewer could ask: "why random folds for the lane premium in a time-series problem?" Tested (single-seed linear-tree hybrid, same 4 folds, MAPE on clean labels):
+
+| Lane premium method | Q2 | Q3 | X1 | X2 | Mean |
+|---|---|---|---|---|---|
+| none | 1.424% | 1.389% | 1.870% | 1.452% | 1.533% |
+| **random 5-fold OOF (used)** | 1.395% | 1.352% | 1.849% | 1.414% | **1.502%** |
+| contiguous time blocks, 5-fold | 1.370% | 1.351% | 1.887% | 1.432% | 1.510% |
+| strictly past-only (walk-forward by month) | 1.350% | 1.455% | 2.079% | 1.395% | 1.570% |
+| random + lane x equipment layer | 1.397% | 1.354% | 1.852% | 1.417% | 1.505% |
+
+- The lane premium is meant to capture a *static* trait of a route. Past-only residuals come from models that are forecasting each month, so they also carry that month's level error (not lane-specific) and early months have tiny training sets; it gets worse than no premium on X1.
+- Random OOF isolates the lane effect; none of the variants ever uses test labels. It is the only variant that improves every fold. Kept.
+
+### 6.9 Ramp shape check
 The quarter-end ramp was assumed linear over 31 days. Tested lengths 21/31/45/60 days x shapes linear / power 1.5 / power 2 (single seed, standard trees):
 - 31-day linear: 1.620% mean, best on the production-like folds together with 45-day power-2 (1.616%, within noise).
 - 21 and 60 days clearly worse (1.66-1.88%). Kept 31-day linear.

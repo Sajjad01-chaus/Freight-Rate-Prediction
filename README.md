@@ -7,6 +7,23 @@ Trained on 48,000 loads (Jan-Oct 2025), scored on 12,000 loads (Nov-Dec 2025).
 
 **Result:** on months the model never saw, it prices loads with **1.50% mean absolute percentage error ($36 on a ~$2,050 load)**, 9 in 10 loads within 3%. A rate-card baseline scores 4.15% ($96).
 
+## Quick start
+
+```bash
+git clone <this-repo-url> && cd <repo-folder>
+python -m venv .venv && .venv\Scripts\activate      # macOS/Linux: source .venv/bin/activate
+python -m pip install -r requirements.txt
+python run_all.py
+```
+
+`run_all.py` runs the unit tests, trains the final model, predicts and runs the provided `score.py` (~1 min). Expected output:
+
+- `validation_predictions.csv` - 12,000 rows, `load_id,predicted_rate`
+- `data/december_chart_inputs.csv` - `predicted_rate` filled for the 31 December rows
+- `scorer_results/candidate_december.png` - the December chart
+- `reports/prediction_checks.md` - input coverage and prediction sanity checks
+- console: `Validated 12,000 final predictions.` / `Validated 31 fixed December predictions.`
+
 ![December chart](scorer_results/candidate_december.png)
 
 ---
@@ -109,7 +126,7 @@ Individual steps:
 python scripts/eda.py             # figures + reports/eda_summary.md
 python scripts/experiments.py     # model comparison on the time folds -> reports/experiments.md
 python scripts/train.py           # final model -> artifacts/model.pkl
-python scripts/predict.py         # validation_predictions.csv + fills data/december_chart_inputs.csv
+python scripts/predict.py         # validation_predictions.csv, fills the December file, reports/prediction_checks.md
 python scripts/insights.py        # accuracy bands, 90% range, business numbers -> reports/insights.md
 python scripts/build_report.py    # reports/report.pdf
 python score.py --predictions validation_predictions.csv --december-predictions data/december_chart_inputs.csv
@@ -128,7 +145,7 @@ src/freight/
   evaluation.py    time-based folds and metrics
 scripts/           eda.py, experiments.py, train.py, predict.py, insights.py, build_report.py
 tests/             unit tests (cleaning, features, fold design, models, output format)
-reports/           report.pdf, figures, EDA summary, model comparison, insights, flagged labels
+reports/           report.pdf, figures, EDA summary, model comparison, insights, prediction checks, flagged labels
 docs/              assignment brief, ANALYSIS_LOG.md (step-by-step record of the analysis)
 validation_predictions.csv   final submission file
 ```
