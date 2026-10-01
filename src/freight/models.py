@@ -102,13 +102,13 @@ DEFAULT_LGB_PARAMS = {
 
 
 class GBM:
-    """LightGBM on log(rate). `trend` controls how time is handled:
+    """LightGBM on log(rate). `trend` sets how time is handled:
 
-    none     - no time feature
-    feature  - days_since_start as a feature (trees hold the last level flat)
-    detrend  - remove a linear monthly trend from the target, add it back at predict time
-    hybrid   - log(rate) = linear market/calendar terms + trees on load features only.
-               The trees never see a date or market value, so they can't memorise days.
+    none:     no time feature
+    feature:  days_since_start as a feature
+    detrend:  linear monthly trend removed before training, added back at predict time
+    hybrid:   linear market/calendar terms + trees on load features only,
+              so the trees never see a date or market value
     """
 
     def __init__(self, trend: str = "hybrid", params: dict | None = None, num_rounds: int | None = None,
@@ -170,12 +170,8 @@ class GBM:
 
 
 class LaneCorrected:
-    """Adds a shrunken per-lane premium on top of a base model.
-
-    The premium is the mean out-of-fold log residual of each lane in the training
-    window, shrunk towards 0 by n / (n + shrink). Out-of-fold residuals are used
-    because in-sample residuals are already partly absorbed by the trees.
-    """
+    """Base model plus a per-lane premium: the lane's mean out-of-fold log residual,
+    shrunk by n / (n + shrink)."""
 
     def __init__(self, make_base, shrink: float = 10.0, k: int = 5):
         self.make_base, self.shrink, self.k = make_base, shrink, k

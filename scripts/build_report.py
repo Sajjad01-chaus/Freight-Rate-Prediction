@@ -96,6 +96,17 @@ def results_rows():
     return rows
 
 
+def algorithm_rows():
+    r = pd.read_csv(config.REPORTS_DIR / "algorithms.csv")
+    folds = list(dict.fromkeys(r.fold))
+    rows = [["Algorithm"] + folds + ["Mean MAPE", "Mean MAE"]]
+    for name, g in r.groupby("algorithm", sort=False):
+        g = g.set_index("fold")
+        rows.append([name] + [f"{g.loc[f, 'MAPE']:.2%}" for f in folds]
+                    + [f"{g.MAPE.mean():.2%}", f"${g.MAE.mean():.2f}"])
+    return rows
+
+
 def main():
     doc = SimpleDocTemplate(str(config.REPORTS_DIR / "report.pdf"), pagesize=A4, leftMargin=1.8 * cm,
                             rightMargin=1.8 * cm, topMargin=1.6 * cm, bottomMargin=1.6 * cm,
@@ -190,6 +201,8 @@ def main():
         "Unit tests assert that no fold trains on dates after its test window.",
     ])
 
+    s.append(Spacer(1, 4))
+    s.append(figure("08_error_distribution.png", WIDTH * 0.7))
     s.append(PageBreak())
     s.append(p("4. Model", H1))
     s.append(p("log(rate) = <b>market part</b> (linear: market index elasticity, quarter-end ramp by equipment, "
@@ -211,8 +224,13 @@ def main():
     s.append(table(rows, [6.3 * cm] + [1.45 * cm] * 4 + [1.75 * cm, 1.75 * cm], bold_last=True))
     s.append(p("MAPE on clean test labels per fold. Including the 1.4% corrupted test labels, MAPE is ~3.9% and RMSE "
                "~$620 for every reasonable model: those rates are 2-5x off and cannot be predicted.", SMALL))
-    s.append(Spacer(1, 4))
-    s.append(figure("08_error_distribution.png", WIDTH * 0.75))
+    s.append(Spacer(1, 6))
+    s.append(p("Algorithms compared for the load part (same hybrid design and folds, single seed, no lane premium):",
+               BODY))
+    s.append(Spacer(1, 3))
+    s.append(table(algorithm_rows(), [6.3 * cm] + [1.45 * cm] * 4 + [1.75 * cm, 1.75 * cm]))
+    s.append(p("XGBoost matches LightGBM's standard trees; the gain comes from linear-leaf trees, which XGBoost does "
+               "not offer. Bagging-based forests are clearly weaker.", SMALL))
 
     # 5. december (required)
     s.append(PageBreak())
@@ -241,8 +259,8 @@ def main():
         "from the market feed rather than from the scoring file.",
     ])
     s.append(Spacer(1, 6))
-    s.append(p("Code, run instructions and a step-by-step analysis log: see the repository README and "
-               "docs/ANALYSIS_LOG.md. The whole submission is reproduced with <b>python run_all.py</b>.", SMALL))
+    s.append(p("Code and run instructions: see the repository README. The whole submission is reproduced with "
+               "<b>python run_all.py</b>.", SMALL))
     doc.build(s)
     print(f"Wrote {config.REPORTS_DIR / 'report.pdf'}")
 

@@ -1,8 +1,22 @@
+# environment
 .venv/
+venv/
 __pycache__/
 *.pyc
+
+# editors / OS
+.vscode/
+.idea/
+.claude/
 .ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+
+# local notes
+personal_notes/
+
+# large model files (rebuilt by scripts/train.py)
 artifacts/*.pkl
 artifacts/*.txt
-.claude/
-personal_notes/
+
+*.log

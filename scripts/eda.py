@@ -225,7 +225,7 @@ def main() -> None:
         "no other nulls, no duplicate IDs or rows"
     )
     facts["December chart inputs"] = (
-        "only pickup, delivery, distance, equipment, weight, date - no market_index, quote_signal or "
+        "only pickup, delivery, distance, equipment, weight and date; no market_index, quote_signal or "
         "coordinates; these are reconstructed from validation.csv daily market means and the city table"
     )
 

@@ -25,6 +25,7 @@ def main() -> None:
     if full:
         run("scripts/eda.py")
         run("scripts/experiments.py")
+        run("scripts/compare_algorithms.py")
     run("scripts/train.py")
     run("scripts/predict.py")
     run("score.py", "--predictions", "validation_predictions.csv",
