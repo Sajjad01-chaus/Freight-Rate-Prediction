@@ -30,7 +30,7 @@ python run_all.py
 | `scorer_results/candidate_december.png` | December chart from `score.py` |
 | `reports/prediction_checks.md` | input coverage and prediction sanity checks |
 
-`python run_all.py --full` also regenerates the EDA figures, the model comparison, the accuracy analysis and the PDF report (about 20 minutes).
+`python run_all.py --full` also regenerates the EDA figures, the model comparison and the accuracy analysis (about 20 minutes).
 
 Individual steps:
 
@@ -41,7 +41,6 @@ python scripts/compare_algorithms.py  # LightGBM vs XGBoost vs forests for the l
 python scripts/train.py          # train the final model
 python scripts/predict.py        # predictions + December file
 python scripts/insights.py       # accuracy bands and price range
-python scripts/build_report.py   # reports/report.pdf
 python -m unittest discover -s tests
 ```
 
@@ -87,7 +86,7 @@ Full results: [reports/experiments.md](reports/experiments.md). XGBoost in the s
 
 ```
 src/freight/     data cleaning, features, models, validation folds
-scripts/         eda, experiments, train, predict, insights, build_report
+scripts/         eda, experiments, compare_algorithms, train, predict, insights
 tests/           unit tests
 reports/         report.pdf, figures, results tables
 data/            input files

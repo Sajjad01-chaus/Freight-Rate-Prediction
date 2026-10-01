@@ -1,7 +1,7 @@
 """Reproduce the whole submission: tests -> train -> predict -> score.py.
 
     python run_all.py                  # core pipeline (~2 min)
-    python run_all.py --full           # also EDA, model comparison, insights and the PDF report (~20 min)
+    python run_all.py --full           # also EDA, model comparison and insights (~20 min)
 """
 import argparse
 import subprocess
@@ -18,7 +18,7 @@ def run(*args: str) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--full", action="store_true", help="also rerun EDA, model comparison, insights and the report")
+    parser.add_argument("--full", action="store_true", help="also rerun EDA, model comparison and insights")
     full = parser.parse_args().full
 
     run("-m", "unittest", "discover", "-s", "tests")
@@ -32,7 +32,6 @@ def main() -> None:
         "--december-predictions", "data/december_chart_inputs.csv")
     if full:
         run("scripts/insights.py")
-        run("scripts/build_report.py")
 
 
 if __name__ == "__main__":
